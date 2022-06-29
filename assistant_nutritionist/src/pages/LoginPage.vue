@@ -79,7 +79,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
   .page {
     position: absolute;
     top: 0;
