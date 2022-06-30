@@ -1,74 +1,103 @@
 <template>
- <div class="page">
+    <div class="item">
+        <div class="item__container">
+            <div class="col">
+                <div>
+                    <img class="item__image" src="" alt="Картинка">
+                </div>
+                <div class="col__item">
+                    <div class="title">
+                        Яблоко
+                    </div>
 
-            <div class="title">
-               Яблоко
+                    <div class="description">
+                        Яблоко зеленое
+                    </div>
+                    <div class="composition">
+
+                        <div class="title">
+                            100 г
+                        </div>
+
+                        <div class="title">
+                            57 ккал
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+            <div class="col">
+                <button class="btn__add">Добавить</button>
             </div>
 
-            <div class="description">
-               Яблоко зеленое
-            </div>
+        </div>
 
-            <div class="title">
-               100 г
-            </div>
 
-            <div class="title">
-               57 ккал
-            </div>
 
-                <button>Добавить</button>
-            </div>
+
+    </div>
 </template>
 
 <script>
     import router from "../../router/index";
     import axios from "axios";
-  
+
 
     export default {
         name: 'FoodItem',
         components: {
-            
+
         }
     }
 </script>
 
 <style scoped lang="scss">
-    .page {
+    .item {
         min-height: 100%;
-        width: 100%;
+        width: 400px;
+        background: #f4f3f3;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 30px;
 
-        .page__addingFood {
+        .item__container {
             display: flex;
-            width: 100%;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
+            flex-direction: row;
+            justify-content: space-between;
             align-items: center;
+            margin: 20px;
 
-            .container {
-                background-color: rgb(229, 236, 236);
-                min-width: 500px;
-                max-width: 600px;
-                padding: 20px;
+            .col {
+
                 display: flex;
+                align-items: center;
+                justify-content: space-between;
+                text-align: left;
                 margin: 10px;
-                flex-direction: column;
 
-                input[type="text"],
-                input[type="password"],
-                input[type="email"] {
-                    width: 300px;
+                .item__image{
+                    width: 100px;
+                    height: 100px;
+                }
+
+                .col__item{
+                    width: 170px;
+                    .composition{
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                    }
+                }
+
+                .btn__add{
                     height: 40px;
-                    background: #c4eaeeb6;
-                    border-radius: 60px;
-                    padding: 12px 20px;
-                    margin: 13px 0;
-                    color: #2D2D2DA6;
-                    font-size: 20px;
-                    border: 1px solid #ccc;
-                    box-sizing: border-box;
+                    width: 75px;
+                    background: rgba(217, 217, 217, 1);
+                    border-radius: 30px;
+                    color: rgba(0, 0, 0, 1);
+                    border: none;
                 }
             }
         }
