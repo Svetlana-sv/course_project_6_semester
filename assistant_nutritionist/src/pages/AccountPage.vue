@@ -77,6 +77,13 @@
                 margin: 15px;
                 flex-direction: column;
 
+                 @media screen and (max-width: 400px) {
+            min-width: 200px;
+            max-width: 300px;
+
+
+    }
+
                 input[type="text"],
                 input[type="password"],
                 input[type="email"] {
@@ -87,7 +94,7 @@
                     padding: 5px 10px;
                     margin: 13px 0;
                     color: #2D2D2DA6;
-                    font-size: 18px;
+                    font-size: 16px;
                     border: 1px solid #ccc;
                     box-sizing: border-box;
                 }

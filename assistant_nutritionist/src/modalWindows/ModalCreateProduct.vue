@@ -15,7 +15,9 @@
                 <div class="modal-content">
                     <input type="text" placeholder="Название" v-model="firstName">
                     <input type="text" placeholder="Группа" v-model="firstName">
-                    <input type="text" placeholder="Описание" v-model="firstName">
+                     <input type="text" placeholder="Картинка" v-model="firstName">
+                   
+                  <input type="text" placeholder="Описание" v-model="firstName">
                   
                     <input type="text" placeholder="Единица измерения (мл, г)" v-model="firstName">
 
@@ -42,13 +44,24 @@
         name: "ModalCreateProduct",
         data: function () {
             return {
-                show: false
+                show: false,
+                avatar: require('../assets/plus.png'),
             }
         },
         methods: {
             closeModal: function () {
                 this.show = false
-            }
+            },
+            changeImage(e) {
+                var file = e.target.files[0]
+                var reader = new FileReader()
+                var that = this
+                reader.readAsDataURL(file)
+                reader.onload = function(e) {
+                    that.avatar = this.result;
+                    console.log(this.result);
+                }
+            },
         }
     }
 </script>
@@ -72,7 +85,13 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-        }
+        
+            @media screen and (max-width: 400px) {
+            min-width: 300px;
+            max-width: 300px;
+            padding: 20px;
+            padding-top: 40px;
+
     }
 
     .modal-title {
@@ -81,6 +100,13 @@
         color: #383838;
         font-size: 28px;
         margin-bottom: 26px;
+
+            @media screen and (max-width: 400px) {
+ 
+            margin-bottom: 5px;
+            font-size: 20px;
+
+    }
     }
 
     .modal-content {
@@ -117,6 +143,12 @@
         font-size: 18px;
         border: 1px solid #ccc;
         box-sizing: border-box;
+
+           @media screen and (max-width: 400px) {
+               max-width: 220px;
+               margin: 3px 0;
+               font-size: 16px;
+            }
     }
 
     .modal-footer__button {
@@ -140,6 +172,12 @@
         width: 30px;
         height: 30px;
         cursor: pointer;
+
+        @media screen and (max-width: 400px) {
+               top: 17px;
+               width: 20px;
+        height: 20px;
+            }
     }
 
     .modal-enter-active,
@@ -151,18 +189,6 @@
     .modal-leave-to {
         opacity: 0
     }
-
-    @media screen and (max-width: 400px) {
-        .modal {
-            min-width: 300px;
-            max-width: 300px;
-            padding: 35px;
         }
-
-        .modal-title {
-            margin-bottom: 5px;
-            font-size: 24px;
-        }
-
-    }
+  }
 </style>

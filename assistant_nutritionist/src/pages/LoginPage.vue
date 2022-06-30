@@ -101,7 +101,7 @@ export default {
   input[type="email"] {
     width: 350px;
     height: 48px;
-    background: #b5f8ffb6;
+    background-color: #6aaba579;
     border-radius: 60px;
     padding: 12px 20px;
     margin: 13px 0;
@@ -109,6 +109,12 @@ export default {
     font-size: 20px;
     border: 1px solid #ccc;
     box-sizing: border-box;
+
+     @media screen and (max-width: 400px) {
+            min-width: 300px;
+            max-width: 300px;
+
+    }
   }
   .label {
     font-family: 'Inter';
@@ -125,7 +131,7 @@ export default {
     cursor: pointer;
   }
   button {
-    background: #7df0fd;
+    background: rgba(217, 217, 217, 1);
     border-radius: 60px;
     color: #323232;
     font-size: 20px;

@@ -62,12 +62,22 @@
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         border-radius: 30px;
 
+        @media screen and (max-width: 400px) {
+            min-width: 200px;
+            max-width: 300px;
+        }
+
         .item__container {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
             margin: 20px;
+
+            @media screen and (max-width: 400px) {
+                flex-direction: column;
+                margin: 10px;
+            }
 
             .col {
 
@@ -77,21 +87,31 @@
                 text-align: left;
                 margin: 10px;
 
-                .item__image{
+                @media screen and (max-width: 400px) {
+                margin: 5px;
+            }
+
+                .item__image {
                     width: 100px;
                     height: 100px;
                 }
 
-                .col__item{
+                .col__item {
                     width: 170px;
-                    .composition{
+
+                     @media screen and (max-width: 400px) {
+                margin: 5px;
+            }
+
+
+                    .composition {
                         display: flex;
                         flex-direction: row;
                         justify-content: space-between;
                     }
                 }
 
-                .btn__add{
+                .btn__add {
                     height: 40px;
                     width: 75px;
                     background: rgba(217, 217, 217, 1);
