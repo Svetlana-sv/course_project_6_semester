@@ -38,4 +38,6 @@ public class Product {
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
+
+    private Integer count;
 }
