@@ -16,7 +16,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class    User {
     @Id
     @Column(name = "user_id")
     @GenericGenerator(name="kaygen" , strategy="increment")
@@ -37,13 +37,14 @@ public class User {
     private Set<Product> products;
 
     @JsonIgnore
+    @OrderBy
     @OneToMany
     @JoinColumn(name = "user_id")
     private Set<Recipe> recipes;
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserParameters parameters;
 
     @JsonIgnore

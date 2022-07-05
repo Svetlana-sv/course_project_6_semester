@@ -103,8 +103,14 @@ public class ProductController {
 
     @DeleteMapping
     public ResponseEntity<String> deleteProductsToday(@RequestParam Long productId, @RequestParam Long userId) throws Exception {
-        UserProducts userProducts = userProductsRepo.findById(productId).orElseThrow(Exception::new);
-        userProductsRepo.delete(userProducts);
-        return ResponseEntity.ok().body("Deleted!");
+        try {
+            UserProducts userProducts = userProductsRepo.findById(productId).orElseThrow(Exception::new);
+            userProductsRepo.delete(userProducts);
+            return ResponseEntity.ok().body("Deleted!");
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Error");
+        }
+
     }
 }

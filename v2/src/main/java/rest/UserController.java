@@ -32,7 +32,30 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
         try {
-            userRepo.save(user);
+            UserParameters defaultParameters = new UserParameters();
+            defaultParameters.setGender("");
+            defaultParameters.setFat_norm(0);
+            defaultParameters.setProtein_norm(0);
+            defaultParameters.setCarbohydrate_norm(0);
+            defaultParameters.setWater_norm(0);
+            defaultParameters.setCalorie_norm(0);
+            defaultParameters.setWeight((float) 0);
+            defaultParameters.setHeight(0);
+            defaultParameters.setAge(0);
+            user.setParameters(defaultParameters);
+            defaultParameters.setUser(userRepo.save(user));
+            userParametersRepo.save(defaultParameters);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseEntity.badRequest().body("Error");
+        }
+        return ResponseEntity.ok("Saved");
+    }
+
+    @PostMapping("/createParameters")
+    public ResponseEntity<String> createParameters(@RequestParam Long userId) {
+        try {
+//            userParametersRepo.save(userRepo.findById(userId));
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseEntity.badRequest().body("Error");
@@ -49,8 +72,9 @@ public class UserController {
     public ResponseEntity<UserParameters> getParameters(@RequestParam Long userId) {
         try {
             User user = userRepo.findById(userId).orElseThrow(Exception::new);
-            UserParameters parameters = user.getParameters();
-            return ResponseEntity.ok().body(parameters);
+            return ResponseEntity.ok().body(userParametersRepo.findByUser(user));
+//            UserParameters parameters = user.getParameters();
+//            return ResponseEntity.ok().body(parameters);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -62,7 +86,7 @@ public class UserController {
     public ResponseEntity<String> changeParameters(@RequestBody UserParameters userParameters, @RequestParam Long userId) {
         try {
             User user = userRepo.findById(userId).orElseThrow(Exception::new);
-            UserParameters parameters = user.getParameters();
+            UserParameters parameters = userParametersRepo.findByUser(user);
 
             parameters.setAge(userParameters.getAge());
             parameters.setHeight(userParameters.getHeight());
@@ -73,7 +97,7 @@ public class UserController {
             parameters.setProtein_norm(userParameters.getProtein_norm());
             parameters.setFat_norm(userParameters.getFat_norm());
             parameters.setGender(userParameters.getGender());
-            userRepo.save(user);
+            userParametersRepo.save(parameters);
 
         } catch (Exception exception) {
             exception.printStackTrace();
