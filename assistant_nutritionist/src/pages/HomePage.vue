@@ -6,30 +6,30 @@
             <div class="container">
                 <div class="row">
                     <div class="row__content">
-                        <p>1158</p>
+                        <p>{{colorie_add}}</p>
                         <p>приход</p>
                     </div>
-                    <div class="row__content">
+                    <div class="row__content main_norma">
                         <p class="main__content">{{ this.$store.getters.parameters.calorie_norm}}</p>
-                        <p>ккал осталось</p>
+                        <p>норма ккал</p>
                     </div>
                     <div class="row__content">
-                        <p>158</p>
-                        <p>расход</p>
+                        <p>{{this.$store.getters.parameters.calorie_norm-colorie_add}}</p>
+                        <p>осталось</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="row__content">
                         <p>Углеводы</p>
-                        <p>158 г / {{ this.$store.getters.parameters.carbohydrate_norm}} г</p>
+                        <p>{{carbohydrate_norm}} г / {{ this.$store.getters.parameters.carbohydrate_norm}} г</p>
                     </div>
                     <div class="row__content">
                         <p>Белки</p>
-                        <p>158 г / {{ this.$store.getters.parameters.protein_norm}} г</p>
+                        <p>{{protein_norm}} г / {{ this.$store.getters.parameters.protein_norm}} г</p>
                     </div>
                     <div class="row__content">
                         <p>Жиры</p>
-                        <p>158 г / {{ this.$store.getters.parameters.fat_norm}} г</p>
+                        <p>{{fat_norm}} г / {{ this.$store.getters.parameters.fat_norm}} г</p>
                     </div>
                 </div>
             </div>
@@ -77,10 +77,12 @@
 
                     </div>
                     <div class="col" id="col1" v-for="(recipe,index) in this.$store.getters.recipesToday" :key="index">
-                        <li v-if="recipe.meal.id==1&&this.k1==1">{{recipe.recipe.name}} {{recipe.recipe.calories}} </li>
+                        <li v-if="recipe.meal.id==1&&this.k1==1">{{recipe.recipe.name}} {{recipe.recipe.calories}} ккал<button class="btn__delete" @click="DeleteRecipe(recipe.id)">Удалить</button>
+                        </li>
                     </div>
                     <div class="col" v-for="(product,index) in this.$store.getters.productsToday" :key="index">
                         <li v-if="product.meal.id==1&&this.k1==1">{{product.product.name}} {{product.product.calories}}
+                            ккал<button class="btn__delete" @click="DeleteProduct(product.id)">Удалить</button>
                         </li>
                     </div>
                 </div>
@@ -124,10 +126,12 @@
 
                     </div>
                     <div class="col" v-for="(recipe,index) in this.$store.getters.recipesToday" :key="index">
-                        <li v-if="recipe.meal.id==2&&this.k2==2">{{recipe.recipe.name}} {{recipe.recipe.calories}} </li>
+                        <li v-if="recipe.meal.id==2&&this.k2==2">{{recipe.recipe.name}} {{recipe.recipe.calories}} ккал<button class="btn__delete" @click="DeleteRecipe(recipe.id)">Удалить</button>
+                        </li>
                     </div>
                     <div class="col" v-for="(product,index) in this.$store.getters.productsToday" :key="index">
                         <li v-if="product.meal.id==2&&this.k2==2">{{product.product.name}} {{product.product.calories}}
+                            ккал<button class="btn__delete" @click="DeleteProduct(product.id)">Удалить</button>
                         </li>
                     </div>
                 </div>
@@ -170,10 +174,12 @@
                     </div>
 
                     <div class="col" v-for="(recipe,index) in this.$store.getters.recipesToday" :key="index">
-                        <li v-if="recipe.meal.id==3&&this.k3==3">{{recipe.recipe.name}} {{recipe.recipe.calories}} </li>
+                        <li v-if="recipe.meal.id==3&&this.k3==3">{{recipe.recipe.name}} {{recipe.recipe.calories}} ккал<button class="btn__delete" @click="DeleteRecipe(recipe.id)">Удалить</button>
+                        </li>
                     </div>
                     <div class="col" v-for="(product,index) in this.$store.getters.productsToday" :key="index">
                         <li v-if="product.meal.id==3&&this.k3==3">{{product.product.name}} {{product.product.calories}}
+                            ккал<button class="btn__delete" @click="DeleteProduct(product.id)">Удалить</button>
                         </li>
                     </div>
                 </div>
@@ -216,11 +222,13 @@
 
                     </div>
                     <div class="col" v-for="(recipe,index) in this.$store.getters.recipesToday" :key="index">
-                        <li v-if="recipe.meal.id==4&&this.k4==4">{{recipe.recipe.name}} {{recipe.recipe.calories}} </li>
+                        <li v-if="recipe.meal.id==4&&this.k4==4">{{recipe.recipe.name}} {{recipe.recipe.calories}} ккал<button class="btn__delete" @click="DeleteRecipe(recipe.id)">Удалить</button>
+                        </li>
                     </div>
                     <div class="col" v-for="(product,index) in this.$store.getters.productsToday" :key="index">
                         <li v-if="product.meal.id==4&&this.k4==4">{{product.product.name}} {{product.product.calories}}
-                            ккал</li>
+                            ккал
+                            ккал <button class="btn__delete" @click="DeleteProduct(product.id)">Удалить</button></li>
                     </div>
                 </div>
                 <!-- <div class="row">
@@ -244,6 +252,7 @@
 
             </div>
         </div>
+
 
         <div class="page__addingFood" v-if="show">
 
@@ -317,6 +326,16 @@
                 this.saveFoodRecipes();
                 this.saveFoodProducts();
             },
+            DeleteProduct(id){
+                this.$store.dispatch("DELETEPRODUCTSTODAY", id);
+      
+                this.$store.dispatch("GETPRODUCTSTODAY");
+            },
+            DeleteRecipe(id){
+                this.$store.dispatch("DELETERECIPESTODAY", id);
+                  this.$store.dispatch("GETRECIPESTODAY");
+   
+            },
             saveFoodRecipes() {
                 var vm = this;
                 var axios = require('axios');
@@ -387,16 +406,70 @@
         computed: {
             recipes_search: function () {
                 var search_word = this.search.toLowerCase();
-                return this.recipes.filter(
+                return this.$store.getters.recipes.filter(
                     (x) =>
                     (x.name.toLowerCase().includes(search_word)));
             },
             products_search: function () {
                 var search_word = this.search.toLowerCase();
-                return this.products.filter(
+                return this.$store.getters.products.filter(
                     (x) =>
                     (x.name.toLowerCase().includes(search_word)));
-            }
+            },
+            colorie_add: function () {
+                var fgf = 0;
+          
+                   this.$store.getters.productsToday.forEach((element) => {
+
+                     fgf += element.product.calories
+                }) 
+             
+            
+                this.$store.getters.recipesToday.forEach((element) => {
+
+                    fgf += element.recipe.calories
+                })
+                return fgf;
+            },
+            carbohydrate_norm: function () {
+                var fgf = 0;
+
+                this.$store.getters.productsToday.forEach((element) => {
+
+                    fgf += element.product.carbohydrates
+                })
+                this.$store.getters.recipesToday.forEach((element) => {
+
+                    fgf += element.recipe.carbohydrates
+                })
+                return fgf;
+            },
+            protein_norm: function () {
+                var fgf = 0;
+
+                this.$store.getters.productsToday.forEach((element) => {
+
+                    fgf += element.product.proteins
+                })
+                this.$store.getters.recipesToday.forEach((element) => {
+
+                    fgf += element.recipe.proteins
+                })
+                return fgf;
+            },
+            fat_norm: function () {
+                var fgf = 0;
+
+                this.$store.getters.productsToday.forEach((element) => {
+
+                    fgf += element.product.fats
+                })
+                this.$store.getters.recipesToday.forEach((element) => {
+
+                    fgf += element.recipe.fats
+                })
+                return fgf;
+            },
         },
     }
 </script>
@@ -456,20 +529,29 @@
                 border-radius: 45px;
 
                 @media screen and (max-width: 500px) {
-                    min-width: 200px;
-                    max-width: 300px;
+                    min-width: 300px;
+                    max-width: 400px;
                 }
 
                 .row {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    align-items: center;
                     padding: 20px;
                     height: auto;
 
                     @media screen and (max-width: 500px) {
+                        display: flex;
                         flex-direction: column;
                         margin: 10px;
+                    }
+
+                    .main_norma {
+                        border: 3px solid #fff;
+                        border-radius: 40px;
+                        padding: 25px;
+
+
                     }
 
                     .row__content {
@@ -486,6 +568,7 @@
                         p.main__content {
                             font-size: 36px;
                         }
+
                     }
                 }
             }
@@ -500,6 +583,9 @@
             .card {
                 display: flex;
                 flex-direction: column;
+                text-align: center;
+                justify-content: center;
+                align-content: center;
                 margin-bottom: 20px;
                 padding: 10px;
                 padding-left: 20px;
@@ -512,22 +598,49 @@
                 height: auto;
 
                 @media screen and (max-width: 500px) {
-
+                    padding: 0px;
                     min-width: 200px;
                     max-width: 400px;
 
                 }
 
                 .col {
-
+                     
                     transition: max-height 0.2s ease-out;
                     @extend .flipIn;
 
+                    
+
                     li {
+                        display: grid;
+                        max-width: 500px;
+                        height: auto;
+                    grid-template-columns: 3fr 1fr;
+                    align-items: center;
+                    text-align: center;
                         list-style: none;
                         margin: 5px;
+                        border-radius: 30px;
+                        padding: 5px;
+                        border: 1px solid rgb(182, 182, 182);
 
-                        @extend .flipIn
+                        @extend .flipIn;
+
+                         @media screen and (max-width: 500px) {
+
+                    min-width: 200px;
+                    max-width: 400px;
+
+                }
+                         .btn__delete {
+                            height: 30px;
+                            width: 90px;
+                            
+                            background: rgba(217, 217, 217, 1);
+                            border-radius: 30px;
+                            border: none;
+                            color: rgba(0, 0, 0, 1);
+                        }
                     }
                 }
 

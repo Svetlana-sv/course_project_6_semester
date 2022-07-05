@@ -75,8 +75,8 @@
                 this.show = false
             },
             SaveProduct() {
-                if(this.product.product_image==null){
-                    this.product.product_image=="https://серебро.рф/img/placeholder.png";
+                if (this.product.product_image == null) {
+                    this.product.product_image = "https://серебро.рф/img/placeholder.png";
                 }
                 var axios = require('axios');
                 var data = JSON.stringify(this.product);
@@ -99,7 +99,10 @@
                     .then(function (response) {
                         console.log(JSON.stringify(response.data));
                         vm.closeModal();
+                        vm.$store.dispatch("GETRECIPES");
+                        vm.$store.dispatch("GETPRODUCTS");
                         vm.message = "Продукт сохранен!";
+                        vm.product = new Array;
                         vm.ShowModalWindow();
                     })
                     .catch(function (error) {
@@ -138,9 +141,9 @@
             left: 50%;
             transform: translate(-50%, -50%);
 
-            @media screen and (max-width: 400px) {
-                min-width: 300px;
-                max-width: 300px;
+            @media screen and (max-width: 500px) {
+                min-width: 200px;
+                max-width: 400px;
                 padding: 20px;
                 padding-top: 40px;
 

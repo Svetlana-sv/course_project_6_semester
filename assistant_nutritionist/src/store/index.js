@@ -62,23 +62,30 @@ export default createStore({
     },
     updateItemsProduct(state) {
       state.itemsProduct = new Array;
+      state.itemsProduct = {};
     },
     updateItemsRecipe(state) {
       state.itemsRecipe = new Array;
+      state.itemsRecipe = {};
     },
     saveRecipes(state, recipes) {
+      state.recipes = [];
       state.recipes = recipes;
     },
     saveProducts(state, products) {
+      state.products = [];
       state.products = products;
     },
     updateRecipesToday(state, recipes) {
+      state.recipesToday = [];
       state.recipesToday = recipes;
     },
     updateProductsToday(state, products) {
+      state.productsToday = [];
       state.productsToday = products;
     },
     updateParameters(state, parameters) {
+      state.parameters = [];
       state.parameters = parameters;
     }
   },
@@ -119,6 +126,7 @@ export default createStore({
       axios(config)
         .then(function (response) {
           console.log(JSON.stringify(response.data));
+          console.log("GETPARAMETERS");
           state.commit("updateParameters", response.data);
         })
         .catch(function (error) {
@@ -169,9 +177,7 @@ export default createStore({
       var config = {
         method: 'get',
         url: 'http://' + state.getters.ip + '/recipe/getRecipesToday?userId=' + state.getters.userId,
-        headers: {
-          'Cookie': 'JSESSIONID=4A126999079A863B53FED9D774DF8FDF'
-        }
+        headers: {}
       };
 
       axios(config)
@@ -191,9 +197,7 @@ export default createStore({
       var config = {
         method: 'get',
         url: 'http://' + state.getters.ip + '/product/getProductsToday?userId=' + state.getters.userId,
-        headers: {
-          'Cookie': 'JSESSIONID=4A126999079A863B53FED9D774DF8FDF'
-        }
+        headers: {}
       };
 
       axios(config)
@@ -205,6 +209,44 @@ export default createStore({
         .catch(function (error) {
           console.log(error);
         });
+
+    },
+    DELETERECIPESTODAY(state,recipeId) {
+      var axios = require('axios');
+
+      var config = {
+        method: 'delete',
+        url: 'http://localhost:8888/recipe?recipeId='+recipeId+'&userId=' + state.getters.userId,
+        headers: {}
+      };
+
+      axios(config)
+        .then(function (response) {
+         state.dispatch("GETRECIPESTODAY");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+
+    },
+    DELETEPRODUCTSTODAY(state,productId) {
+      var axios = require('axios');
+      console.log("DELETEPRODUCTSTODAY "+productId);
+      var config = {
+        method: 'delete',
+        url: 'http://localhost:8888/product?productId='+productId+'&userId=' + state.getters.userId,
+        headers: {}
+      };
+
+      axios(config)
+        .then(function (response) {
+          state.dispatch("GETPRODUCTSTODAY");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
 
     }
   },

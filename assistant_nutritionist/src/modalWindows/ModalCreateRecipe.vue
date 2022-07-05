@@ -30,12 +30,13 @@
                     </div>
 
 
-                    <input type="text" placeholder="Масса готового блюда" v-model="recipe.weight">
+                    <input type="text" placeholder="Масса готового блюда" v-model="recipe.weight" required>
+                    <input type="text" placeholder="Единица измерения (г, мл)" v-model="recipe.measure_unit">
                     <div class="container">
-                        <input type="text" placeholder="Калорийность" v-model="recipe.calories">
-                        <input type="text" placeholder="Углеводы" v-model="recipe.carbohydrates">
-                        <input type="text" placeholder="Белки" v-model="recipe.proteins">
-                        <input type="text" placeholder="Жиры" v-model="recipe.fats">
+                        <input type="text" placeholder="Калорийность" v-model="recipe.calories" required>
+                        <input type="text" placeholder="Углеводы" v-model="recipe.carbohydrates" required>
+                        <input type="text" placeholder="Белки" v-model="recipe.proteins" required>
+                        <input type="text" placeholder="Жиры" v-model="recipe.fats" required>
                     </div>
 
                 </div>
@@ -74,7 +75,8 @@
                     carbohydrates: 0,
                     proteins: 0,
                     fats: 0,
-                    recipe_image: null
+                    recipe_image: null,
+                    measure_unit: ""
                 },
                 search: "",
                 products: {},
@@ -89,13 +91,15 @@
             },
             SaveRecipe() {
                  if(this.recipe.recipe_image==null){
-                    this.recipe.recipe_image=="https://серебро.рф/img/placeholder.png";
+                    this.recipe.recipe_image="https://серебро.рф/img/placeholder.png";
                 }
                 var axios = require('axios');
 
+
+                
                 var data = JSON.stringify(this.recipe);
                 var vm = this;
-                console.log(this.recipe);
+           
 
                 var config = {
                     method: 'post',
@@ -125,6 +129,7 @@
                 var axios = require('axios');
                 var data = JSON.stringify(this.checkedProducts);
                 console.log(this.checkedProducts);
+                  var vm = this;
                 var config = {
                     method: 'post',
                     url: 'http://' + this.$store.getters.ip + '/recipe/add-products?recipeId=' + this.recipeId,
@@ -138,9 +143,11 @@
                 axios(config)
                     .then(function (response) {
                         console.log(JSON.stringify(response.data));
-                        
+                         vm.$store.dispatch("GETRECIPES");
+                         vm.$store.dispatch("GETPRODUCTS");
                         vm.closeModal();
                         vm.message = "Рецепт сохранен!";
+                        vm.recipe = new Array;
                         vm.ShowModalWindow();
                     })
                     .catch(function (error) {
@@ -164,26 +171,8 @@
             }
         },
         mounted() {
-            var axios = require('axios');
-            var vm = this;
-
-            var config = {
-                method: 'get',
-                url: 'http://localhost:8888/product/getProducts?userId=' + this.$store.getters.userId,
-                headers: {
-                    'Cookie': 'JSESSIONID=4A126999079A863B53FED9D774DF8FDF'
-                }
-            };
-
-            axios(config)
-                .then(function (response) {
-                    console.log(JSON.stringify(response.data));
-                    vm.products = response.data;
-
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            this.$store.dispatch("GETPRODUCTS");
+            this.products = this.$store.getters.products;
 
         },
     }
@@ -201,7 +190,7 @@
         .modal {
             background: #fff;
             border-radius: 67px;
-            padding: 50px;
+            padding: 40px;
             min-width: 420px;
             max-width: 480px;
             position: absolute;
@@ -209,9 +198,9 @@
             left: 50%;
             transform: translate(-50%, -50%);
 
-            @media screen and (max-width: 400px) {
-                min-width: 300px;
-                max-width: 300px;
+            @media screen and (max-width: 500px) {
+                min-width: 200px;
+                max-width: 400px;
                 padding: 20px;
                 padding-top: 40px;
 
@@ -316,7 +305,7 @@
         background: #D9D9D9;
         border-radius: 60px;
         padding: 5px 10px;
-        margin: 13px 0;
+        margin: 5px 0;
         color: #2D2D2DA6;
         font-size: 18px;
         border: 1px solid #ccc;
@@ -324,7 +313,7 @@
 
         @media screen and (max-width: 400px) {
             max-width: 220px;
-            margin: 3px 0;
+            margin: px 0;
             font-size: 16px;
         }
     }

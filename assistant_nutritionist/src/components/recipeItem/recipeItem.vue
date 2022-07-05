@@ -13,18 +13,18 @@
                     <div class="composition">
 
                         <div class="info">
-                          {{recipe.weight}} {{recipe.measure_unit}}
+                            {{recipe.weight}} {{recipe.measure_unit}}
                         </div>
 
                         <div class="info">
-                            {{recipe.calories}}	ккал
+                            {{recipe.calories}} ккал
                         </div>
                     </div>
                 </div>
 
             </div>
 
-                <div class="col">
+            <div class="col">
                 <button class="btn__delete" @click="deleteRecipe()">Удалить</button>
             </div>
 
@@ -41,14 +41,30 @@
 
     export default {
         name: 'RecipeItem',
-        props:{
+        props: {
             recipe: Array
         },
         components: {
 
         },
         methods: {
-            deleteRecipe(){
+            deleteRecipe() {
+                var axios = require('axios');
+                var vm = this;
+                var config = {
+                    method: 'delete',
+                    url: 'http://localhost:8888/recipe/recipeDelete?recipeId='+this.recipe.id+'&userId='+this.$store.getters.userId,
+                    headers: {}
+                };
+
+                axios(config)
+                    .then(function (response) {
+                        console.log(JSON.stringify(response.data));
+                        vm.$store.dispatch("GETRECIPES");
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
 
             }
 
@@ -94,28 +110,28 @@
                 @media screen and (max-width: 400px) {
                     flex-direction: column;
                     margin: 5px;
-            }
+                }
 
                 .item__image {
                     display: flex;
                     align-items: center;
                     max-width: 100px;
                     max-height: 100px;
-                     border: 1px solid rgb(196, 196, 196)
+                    border: 1px solid rgb(196, 196, 196)
                 }
 
                 .col__item {
                     max-width: 170px;
                     margin: 5px;
 
-                    .title{
+                    .title {
                         font-weight: bold;
                     }
 
-                     @media screen and (max-width: 400px) {
-                         max-width: 140px;
-                         margin: 5px;
-            }
+                    @media screen and (max-width: 400px) {
+                        max-width: 140px;
+                        margin: 5px;
+                    }
 
 
                     .composition {
@@ -124,7 +140,7 @@
                         justify-content: space-between;
                         margin-top: 3px;
 
-                        .info{
+                        .info {
                             display: flex;
                             align-items: center;
                             font-size: 16px;

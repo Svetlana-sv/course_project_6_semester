@@ -48,14 +48,25 @@
         },
         data() {
             return {
-                parameters: {}
+                parameters: {
+                    height: 0,
+                    weight: 0,
+                    age: 0,
+                    gender: "",
+                    calorie_norm: 0,
+                    water_norm: 0,
+                    carbohydrate_norm: 0,
+                    protein_norm: 0,
+                    fat_norm: 0,
+                }
+                // parameters: this.$store.getters.parameters
             }
         },
         methods: {
             SaveData() {
                 var axios = require('axios');
                 var data = JSON.stringify(this.parameters);
-
+                var vm = this;
                 var config = {
                     method: 'post',
                     url: 'http://' + this.$store.getters.ip + '/user/changeParameters?userId=' + this.$store.getters
@@ -70,7 +81,7 @@
                 axios(config)
                     .then(function (response) {
                         console.log(JSON.stringify(response.data));
-                        
+                        vm.$store.dispatch("GETPARAMETERS"); 
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -79,6 +90,7 @@
             getParameters() {
                this.$store.dispatch("GETPARAMETERS"); 
                this.parameters = this.$store.getters.parameters;
+               console.log(this.$store.getters.parameters);
                    
             },
             calorieCalculation() {
@@ -148,9 +160,9 @@
                 margin: 15px;
                 flex-direction: column;
 
-                @media screen and (max-width: 400px) {
+                @media screen and (max-width: 500px) {
                     min-width: 200px;
-                    max-width: 300px;
+                    max-width: 400px;
 
 
                 }

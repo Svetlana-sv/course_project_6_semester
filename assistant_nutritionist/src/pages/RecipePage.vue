@@ -15,7 +15,7 @@
         </div>
 
         <div class="page_recipes">
-   <RecipeItem v-for="(recipe, index) in recipes" :key="index" :recipe="recipe"></RecipeItem>
+   <RecipeItem v-for="(recipe, index) in this.$store.getters.recipes" :key="index" :recipe="recipe"></RecipeItem>
         </div>
 
         <ModalCreateRecipe ref="modalCreateRecipe"></ModalCreateRecipe>
@@ -43,14 +43,13 @@
         },
         data() {
             return {
-                recipes: {},
                 search: ""
             }
         },
         methods: {},
         mounted() {
-            this.recipes = this.$store.getters.recipes;
-           
+             this.$store.dispatch("GETRECIPES");
+            this.$store.dispatch("GETPRODUCTS");
 
         },
         // created() {

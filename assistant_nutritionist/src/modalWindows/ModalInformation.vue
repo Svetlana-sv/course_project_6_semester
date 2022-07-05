@@ -58,9 +58,9 @@
             left: 50%;
             transform: translate(-50%, -50%);
 
-            @media screen and (max-width: 400px) {
-                min-width: 300px;
-                max-width: 300px;
+            @media screen and (max-width: 500px) {
+                min-width: 200px;
+                max-width: 400px;
                 padding: 20px;
                 padding-top: 40px;
 

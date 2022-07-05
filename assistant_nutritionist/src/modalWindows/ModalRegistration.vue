@@ -38,7 +38,9 @@
     }
 </script>
 
-<style>
+<style lang="scss" scoped>
+
+
     .modal-shadow {
         position: absolute;
         top: 0;
@@ -57,6 +59,14 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+
+        @media screen and (max-width: 500px) {
+                min-width: 200px;
+                max-width: 400px;
+                padding: 10px;
+                padding-top: 40px;
+
+            }
     }
     .modal-title {
         font-family: 'Inter';
