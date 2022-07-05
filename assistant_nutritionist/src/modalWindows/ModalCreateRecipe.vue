@@ -13,43 +13,179 @@
             </slot>
             <slot name="body">
                 <div class="modal-content">
-                    <input type="text" placeholder="Название" v-model="firstName">
-                    <input type="text" placeholder="Категория" v-model="firstName">
-                    <input type="text" placeholder="Картинка" v-model="firstName">
+                    <input type="text" placeholder="Название" v-model="recipe.name">
+                    <input type="text" placeholder="Картинка" v-model="recipe.recipe_image">
+                    <input type="text" placeholder="Поиск" v-model="search">
                     <h3>Ингредиенты</h3>
-                    <input type="text" placeholder="Поиск" v-model="firstName">
+                    <div class="search">
 
-                    <input type="text" placeholder="Масса готового блюда" v-model="firstName">
+                        <ul v-for="(s, index) in search_text" :key="index">
+                            <li>{{s.name}} - {{s.count}} {{s.measure_unit}} <label for="">
+                                    <input type="checkbox" v-bind:value="s" v-model="checkedProducts"
+                                        class="custom-checkbox">
+                                </label></li>
+
+
+                        </ul>
+                    </div>
+
+
+                    <input type="text" placeholder="Масса готового блюда" v-model="recipe.weight">
                     <div class="container">
-                        <input type="text" placeholder="Калорийность" v-model="firstName">
-                        <input type="text" placeholder="Углеводы" v-model="firstName">
-                        <input type="text" placeholder="Белки" v-model="firstName">
-                        <input type="text" placeholder="Жиры" v-model="firstName">
+                        <input type="text" placeholder="Калорийность" v-model="recipe.calories">
+                        <input type="text" placeholder="Углеводы" v-model="recipe.carbohydrates">
+                        <input type="text" placeholder="Белки" v-model="recipe.proteins">
+                        <input type="text" placeholder="Жиры" v-model="recipe.fats">
                     </div>
 
                 </div>
             </slot>
             <slot name="footer">
                 <div class="modal-content">
-                    <button class="modal-footer__button">Сохранить</button>
+                    <button class="modal-footer__button" @click="SaveRecipe()">Сохранить</button>
                 </div>
             </slot>
         </div>
+
+        <ModalWindow ref="modalWindow">
+            <template v-slot:title>
+                <h3>Информация!</h3>
+            </template>
+            <template v-slot:body>
+                <p>{{message}}</p>
+            </template>
+        </ModalWindow>
     </div>
 </template>
 <script>
+    import ModalWindow from "../modalWindows/ModalInformation.vue"
     export default {
         name: "ModalCreateRecipe",
+        components: {
+            ModalWindow
+        },
         data: function () {
             return {
-                show: false
+                show: false,
+                recipe: {
+                    name: "",
+                    weight: 0,
+                    calories: 0,
+                    carbohydrates: 0,
+                    proteins: 0,
+                    fats: 0,
+                    recipe_image: null
+                },
+                search: "",
+                products: {},
+                checkedProducts: [],
+                recipeId: "",
+                meassege: ""
             }
         },
         methods: {
             closeModal: function () {
                 this.show = false
+            },
+            SaveRecipe() {
+                 if(this.recipe.recipe_image==null){
+                    this.recipe.recipe_image=="https://серебро.рф/img/placeholder.png";
+                }
+                var axios = require('axios');
+
+                var data = JSON.stringify(this.recipe);
+                var vm = this;
+                console.log(this.recipe);
+
+                var config = {
+                    method: 'post',
+                    url: 'http://' + this.$store.getters.ip + '/recipe/create?userId=' + this.$store.getters.userId,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // 'Cookie': 'JSESSIONID=4A126999079A863B53FED9D774DF8FDF'
+                    },
+                    data: data
+                };
+                axios.defaults.withCredentials = false;
+
+                console.log(this.checkedProducts);
+                axios(config)
+                    .then(function (response) {
+                        console.log(JSON.stringify(response.data));
+                        vm.recipeId = response.data;
+                        vm.addProducts();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        vm.message = "Ошибка! Повторите попытку.";
+                        vm.ShowModalWindow();
+                    });
+            },
+            addProducts() {
+                var axios = require('axios');
+                var data = JSON.stringify(this.checkedProducts);
+                console.log(this.checkedProducts);
+                var config = {
+                    method: 'post',
+                    url: 'http://' + this.$store.getters.ip + '/recipe/add-products?recipeId=' + this.recipeId,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cookie': 'JSESSIONID=4A126999079A863B53FED9D774DF8FDF'
+                    },
+                    data: data
+                };
+
+                axios(config)
+                    .then(function (response) {
+                        console.log(JSON.stringify(response.data));
+                        
+                        vm.closeModal();
+                        vm.message = "Рецепт сохранен!";
+                        vm.ShowModalWindow();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            ShowModalWindow() {
+                this.$refs.modalWindow.show = true;
+            },
+            CloseModalWindow() {
+                this.$refs.modalWindow.show = false;
+            },
+
+        },
+        computed: {
+            search_text: function () {
+                var search_word = this.search.toLowerCase();
+                return this.products.filter(
+                    (x) =>
+                    (x.name.toLowerCase().includes(search_word)));
             }
-        }
+        },
+        mounted() {
+            var axios = require('axios');
+            var vm = this;
+
+            var config = {
+                method: 'get',
+                url: 'http://localhost:8888/product/getProducts?userId=' + this.$store.getters.userId,
+                headers: {
+                    'Cookie': 'JSESSIONID=4A126999079A863B53FED9D774DF8FDF'
+                }
+            };
+
+            axios(config)
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                    vm.products = response.data;
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        },
     }
 </script>
 
@@ -73,13 +209,13 @@
             left: 50%;
             transform: translate(-50%, -50%);
 
-             @media screen and (max-width: 400px) {
-            min-width: 300px;
-            max-width: 300px;
-            padding: 20px;
-            padding-top: 40px;
+            @media screen and (max-width: 400px) {
+                min-width: 300px;
+                max-width: 300px;
+                padding: 20px;
+                padding-top: 40px;
 
-    }
+            }
         }
     }
 
@@ -90,18 +226,71 @@
         font-size: 28px;
         margin-bottom: 26px;
 
-         @media screen and (max-width: 400px) {
- 
+        @media screen and (max-width: 400px) {
+
             margin-bottom: 5px;
             font-size: 20px;
 
-    }
+        }
     }
 
     .modal-content {
         margin-bottom: 5px;
         margin-top: 5px;
-       
+
+        .search {
+            height: 120px;
+            overflow: auto;
+
+            @media screen and (max-width: 400px) {
+
+                height: 80px;
+            }
+
+            ul {
+
+                padding: 0;
+                margin: 0;
+                list-style: none;
+
+                li {
+                    text-align: left;
+                    padding: 5px;
+                    border-radius: 25px;
+                    margin: 5px;
+                    border: 0.5px solid #bababa;
+                    background-color: #ebebeb;
+
+
+                    input {
+                        width: auto;
+                        height: auto;
+                    }
+
+                    .custom-checkbox+label {
+                        display: inline-flex;
+                        align-items: center;
+                        user-select: none;
+                    }
+
+                    .custom-checkbox+label::before {
+                        content: '';
+                        display: inline-block;
+                        width: 3em;
+                        height: 3em;
+                        flex-shrink: 0;
+                        flex-grow: 0;
+                        border: 1px solid #adb5bd;
+                        border-radius: 0.25em;
+                        margin-right: 0.5em;
+                        background-repeat: no-repeat;
+                        background-position: center center;
+                        background-size: 50% 50%;
+                    }
+                }
+            }
+        }
+
     }
 
     .container {
@@ -133,11 +322,11 @@
         border: 1px solid #ccc;
         box-sizing: border-box;
 
-          @media screen and (max-width: 400px) {
-               max-width: 220px;
-               margin: 3px 0;
-               font-size: 16px;
-            }
+        @media screen and (max-width: 400px) {
+            max-width: 220px;
+            margin: 3px 0;
+            font-size: 16px;
+        }
     }
 
     .modal-footer__button {
@@ -162,11 +351,11 @@
         height: 30px;
         cursor: pointer;
 
-          @media screen and (max-width: 400px) {
-               top: 17px;
-               width: 20px;
-        height: 20px;
-            }
+        @media screen and (max-width: 400px) {
+            top: 17px;
+            width: 20px;
+            height: 20px;
+        }
     }
 
     .modal-enter-active,
