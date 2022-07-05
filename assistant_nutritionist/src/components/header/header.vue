@@ -3,7 +3,7 @@
     <nav>
       <router-link to="/home">Главная </router-link>
       <router-link to="/recipe">Рецепты </router-link>
-      <router-link to="/">Измерения </router-link>
+      <!-- <router-link to="/">Измерения </router-link> -->
       <router-link to="/account">Личный кабинет</router-link>
       <!-- <router-link to="/about">About</router-link> -->
     </nav>
