@@ -46,4 +46,6 @@ public class Recipe {
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
+
+    private String measure_unit;
 }

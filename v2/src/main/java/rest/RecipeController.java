@@ -119,4 +119,11 @@ public class RecipeController {
             userRecipesRepo.delete(userRecipes);
             return ResponseEntity.ok().body("Deleted!");
     }
+
+    @DeleteMapping("/recipeDelete")
+    public ResponseEntity<String> deleteRecipe(@RequestParam Long recipeId, @RequestParam Long userId) throws Exception {
+        Recipe recipes = recipesRepo.findById(recipeId).orElseThrow(Exception::new);
+        recipesRepo.delete(recipes);
+        return ResponseEntity.ok().body("Deleted!");
+    }
 }
