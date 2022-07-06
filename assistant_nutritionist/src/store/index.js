@@ -54,19 +54,21 @@ export default createStore({
       if (!(state.itemsProduct.includes(item))) {
         state.itemsProduct.push(item);
       }
+      // state.itemsProduct.push(item);
     },
     addItemsRecipe(state, item) {
       if (!(state.itemsRecipe.includes(item))) {
         state.itemsRecipe.push(item);
       }
+      // state.itemsRecipe.push(item);
     },
     updateItemsProduct(state) {
       state.itemsProduct = new Array;
-      state.itemsProduct = {};
+      state.itemsProduct = [];
     },
     updateItemsRecipe(state) {
       state.itemsRecipe = new Array;
-      state.itemsRecipe = {};
+      state.itemsRecipe = [];
     },
     saveRecipes(state, recipes) {
       state.recipes = [];
