@@ -1,14 +1,19 @@
-# Курсовой проект
+# assistant_nutritionist
 
-В данной курсовой работе было рассмотрено создание сайта "Название".
+## Project setup
+```
+npm install
+```
 
-Целью данной курсовой работы является разработка многостраничного сайта, который предоставит пользователю полную информацию о...
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
-При разработке данного проекта использовался следующий стек технологий:
-1.	Среда разработки Visual Studio Code
-2.	Vue.js
-3.	Spring Framework
-4.	JavaScript
-4.	PostgreSQL
-7.	Figma
-8.	Postman
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
