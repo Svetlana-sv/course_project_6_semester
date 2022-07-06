@@ -37,7 +37,7 @@
     </ModalRegistration>
 
     <ModalWindow ref="modalWindow">
-        <template v-slot:title>
+      <template v-slot:title>
         <h3>Информация!</h3>
       </template>
       <template v-slot:body>
@@ -78,39 +78,50 @@
     },
     methods: {
       Login() {
-        this.$store.dispatch("AUTHORIZATION", this.login, this.password);
+        if (this.login != "" && this.password != "") {
+          this.$store.dispatch("AUTHORIZATION", this.login, this.password);
+        } else {
+          this.message = "Ошибка! Введите корректные данные."
+          this.ShowModalWindow();
+        }
         //при регистрации надо создать строку в Parameters
         this.login = "";
         this.password = "";
       },
       Registration() {
-        var axios = require('axios');
-        var data = JSON.stringify(this.user);
-        var vm = this;
-        console.log(data);
+        if (this.user.login != "" && this.user.password != "") {
+          var axios = require('axios');
+          var data = JSON.stringify(this.user);
+          var vm = this;
+          console.log(data);
 
-        var config = {
-          method: 'post',
-          url: 'http://' + this.$store.getters.ip + '/user/register',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          data: data
-        };
+          var config = {
+            method: 'post',
+            url: 'http://' + this.$store.getters.ip + '/user/register',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            data: data
+          };
 
-        axios(config)
-          .then(function (response) {
-            console.log(JSON.stringify(response.data));
-            vm.CloseModalRegistration();
-            vm.message = "Регистрация успешно завершена!"
-            vm.ShowModalWindow();
-          })
-          .catch(function (error) {
-            console.log(error);
-            vm.CloseModalRegistration();
-            vm.message = "Ошибка! Повторите попытку."
-            vm.ShowModalWindow();
-          });
+          axios(config)
+            .then(function (response) {
+              console.log(JSON.stringify(response.data));
+              vm.CloseModalRegistration();
+              vm.message = "Регистрация успешно завершена!"
+              vm.ShowModalWindow();
+            })
+            .catch(function (error) {
+              console.log(error);
+              vm.CloseModalRegistration();
+              vm.message = "Ошибка! Повторите попытку."
+              vm.ShowModalWindow();
+            });
+        } else {
+          this.CloseModalRegistration();
+          this.message = "Ошибка! Введите корректные данные."
+          this.ShowModalWindow();
+        }
       },
       ShowModalRegistration() {
         this.password = "";

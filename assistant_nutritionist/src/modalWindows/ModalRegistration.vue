@@ -42,7 +42,9 @@
 
 
     .modal-shadow {
-        position: absolute;
+        position: fixed;
+            overflow-y: auto;
+  z-index: 25;
         top: 0;
         left: 0;
         min-height: 100%;

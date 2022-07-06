@@ -598,7 +598,7 @@
                 height: auto;
 
                 @media screen and (max-width: 500px) {
-                    padding: 0px;
+                    padding: 10px;
                     min-width: 200px;
                     max-width: 400px;
 
@@ -629,7 +629,7 @@
                          @media screen and (max-width: 500px) {
 
                     min-width: 200px;
-                    max-width: 400px;
+                    width: 200px;
 
                 }
                          .btn__delete {

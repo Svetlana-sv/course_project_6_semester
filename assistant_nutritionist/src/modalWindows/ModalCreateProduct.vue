@@ -122,8 +122,14 @@
 </script>
 
 <style lang="scss" scoped>
+
+body{
+     overflow-y: hidden;
+}
     .modal-shadow {
-        position: absolute;
+       position: fixed;
+            overflow-y: auto;
+  z-index: 25;
         top: 0;
         left: 0;
         min-height: 100%;
@@ -132,6 +138,7 @@
 
         .modal {
             background: #fff;
+          
             border-radius: 67px;
             padding: 50px;
             min-width: 420px;
@@ -146,6 +153,8 @@
                 max-width: 400px;
                 padding: 20px;
                 padding-top: 40px;
+               
+               
 
             }
 
