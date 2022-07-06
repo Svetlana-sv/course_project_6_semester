@@ -12,4 +12,4 @@
 5.	PostgreSQL
 6.	Postman
 
-![Иллюстрация к проекту](https://github.com/Svetlana-sv/course_project_6_semester/main/AssistantNutritionist.png)
+![Иллюстрация к проекту](https://github.com/Svetlana-sv/course_project_6_semester/blob/main/AssistantNutritionist.png)
